@@ -40,4 +40,4 @@ if __name__ == "__main__":
         addr = "localhost:5000"
     else:
         addr = sys.argv[1]
-    app.run()
+    app.run(host="0.0.0.0")
