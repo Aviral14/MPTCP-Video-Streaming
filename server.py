@@ -1,3 +1,4 @@
+import sys
 from flask import Flask, render_template, make_response, send_file
 from werkzeug.routing import BaseConverter
 
@@ -15,7 +16,7 @@ app.url_map.converters["regex"] = RegexConverter
 
 @app.route("/")
 def index_server():
-    return send_file("./assets/index.html")
+    return render_template("./assets/index.html", context={addr: addr})
 
 
 @app.route('/media/<regex("[0-9]+"):mId>/stream/')
@@ -25,12 +26,18 @@ def hls_stream_handler(mId, segname=None):
         file = f"./assets/media/{mId}/hls/index.m3u8"
         response = make_response(send_file(file))
         response.headers["Content-Type"] = "application/x-mpegURL"
+        response.headers["Cache-Control"] = "public, max-age=10"
     else:
         file = f"./assets/media/{mId}/hls/{segname}"
         response = make_response(send_file(file))
         response.headers["Content-Type"] = "video/MP2T"
+        response.headers["Cache-Control"] = "public, max-age=10"
     return response
 
 
 if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        addr = "localhost:5000"
+    else:
+        addr = sys.argv[1]
     app.run()
