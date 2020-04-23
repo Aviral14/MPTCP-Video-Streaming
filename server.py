@@ -2,7 +2,7 @@ import sys
 from flask import Flask, render_template, make_response, send_file
 from werkzeug.routing import BaseConverter
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="assets")
 
 
 class RegexConverter(BaseConverter):
@@ -16,7 +16,7 @@ app.url_map.converters["regex"] = RegexConverter
 
 @app.route("/")
 def index_server():
-    return render_template("./assets/index.html", context={addr: addr})
+    return render_template("index.html", context={addr: addr})
 
 
 @app.route('/media/<regex("[0-9]+"):mId>/stream/')
