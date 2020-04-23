@@ -16,7 +16,9 @@ app.url_map.converters["regex"] = RegexConverter
 
 @app.route("/")
 def index_server():
-    return render_template("index.html", context={addr: addr})
+    response = make_response(render_template("index.html", addr=addr))
+    response.headers["Cache-Control"] = "public, max-age=0"
+    return response
 
 
 @app.route('/media/<regex("[0-9]+"):mId>/stream/')
