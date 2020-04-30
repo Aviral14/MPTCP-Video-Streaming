@@ -14,5 +14,5 @@ A flask Server to implement Video Streaming using MPTCP
   ```
  ### To run the server
   ```
-  python server.py
+  python server.py [server IP Address]
   ```
